@@ -1,0 +1,20 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/.env
+node_modules/
+.env
+.env.local
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Local run state
+.run/
+.DS_Store
+
+# Docs
+docs/
