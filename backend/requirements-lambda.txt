@@ -1,0 +1,15 @@
+# Runtime dependencies for AWS Lambda only (bin/aws/4-backend.sh builds from this).
+# Left out on purpose:
+#   boto3     - already included in the Lambda Python runtime
+#   uvicorn   - Lambda calls Mangum directly; no web server needed
+#   moto, pytest, httpx - local development and tests only
+fastapi>=0.115,<1.0
+mangum>=0.17
+python-multipart>=0.0.9
+pydantic>=2.7,<3.0
+pydantic-settings>=2.3
+email-validator>=2.1
+SQLAlchemy>=2.0,<2.1
+psycopg[binary]>=3.2
+PyJWT>=2.8
+bcrypt>=4.1

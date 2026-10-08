@@ -29,13 +29,18 @@ ALLOWED_CONTENT_TYPES = {
 @lru_cache
 def get_s3_client():
     s = get_settings()
-    return boto3.client(
-        "s3",
-        region_name=s.aws_region,
-        endpoint_url=s.s3_endpoint_url or None,
-        aws_access_key_id=s.aws_access_key_id or None,
-        aws_secret_access_key=s.aws_secret_access_key or None,
-    )
+    if s.s3_endpoint_url:
+        # Local emulator: point boto3 at it with the emulator's dummy keys.
+        return boto3.client(
+            "s3",
+            region_name=s.aws_region,
+            endpoint_url=s.s3_endpoint_url,
+            aws_access_key_id=s.aws_access_key_id or None,
+            aws_secret_access_key=s.aws_secret_access_key or None,
+        )
+    # Real AWS: never pass keys in code. boto3 finds credentials itself -
+    # the Lambda's IAM role in the cloud, or your AWS_PROFILE on a laptop.
+    return boto3.client("s3", region_name=s.aws_region)
 
 
 def ensure_bucket() -> None:

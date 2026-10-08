@@ -23,10 +23,11 @@ log = logging.getLogger("agricore")
 async def lifespan(app: FastAPI):
     """Runs once at startup (before `yield`) and once at shutdown (after)."""
     Base.metadata.create_all(bind=engine)  # no-op if the tables already exist
-    try:
-        storage.ensure_bucket()
-    except Exception as exc:  # the API still works for everything except uploads
-        log.warning("S3 not reachable (%s) - service report uploads will fail", exc)
+    if get_settings().s3_endpoint_url:  # local emulator only; on AWS the deploy script creates the bucket
+        try:
+            storage.ensure_bucket()
+        except Exception as exc:  # the API still works for everything except uploads
+            log.warning("S3 not reachable (%s) - service report uploads will fail", exc)
     yield
 
 
@@ -58,5 +59,7 @@ def health():
 
 app.include_router(api)
 
-# AWS Lambda entry point (unused locally).
-handler = Mangum(app, lifespan="auto")
+# AWS Lambda entry point (unused locally). lifespan="off" because Mangum would
+# otherwise rerun the startup code on *every* request; on AWS the tables are
+# created by bin/seed.sh and the bucket by bin/aws/2-storage.sh.
+handler = Mangum(app, lifespan="off")

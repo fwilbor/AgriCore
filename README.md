@@ -180,14 +180,18 @@ The tests use a separate `agricore_test` database, so your demo data is never to
 
 ---
 
-## Deploying to AWS (optional, not required for this project)
+## Deploying to AWS
 
-The code is ready for the target architecture. The steps would be:
+The full walkthrough is in **[docs/DEPLOY_AWS.md](docs/DEPLOY_AWS.md)**. In short, with `AWS_PROFILE` set:
 
-1. **RDS:** create a PostgreSQL instance, then run `bin/seed.sh --database-url postgresql+psycopg://USER:PASS@HOST:5432/agricore`.
-2. **S3 documents:** create a private bucket. In the Lambda environment, set `S3_BUCKET` and remove `S3_ENDPOINT_URL` and the fake keys. Give the Lambda role an IAM policy with `s3:PutObject`, `s3:GetObject` and `s3:DeleteObject`.
-3. **Lambda:** package `backend/app` with its dependencies. Set the handler to `app.main.handler`. Set `DATABASE_URL`, `JWT_SECRET`, and `CORS_ORIGINS=["https://<cloudfront-domain>"]`. Enable a Function URL.
-4. **Frontend:** build with `VITE_API_URL=https://<function-url>/api npm run build`. Upload `frontend/dist/` to an S3 static-site bucket and put CloudFront in front of it, with 403/404 errors routed to `/index.html` for client-side routing.
+```bash
+bin/aws/1-database.sh   # RDS PostgreSQL + security groups
+bin/aws/2-storage.sh    # private docs bucket, site bucket, CloudFront (OAC)
+bin/aws/3-seed.sh       # same seed data, loaded into RDS + real S3
+bin/aws/4-backend.sh    # Linux package -> Lambda (handler app.main.handler) + Function URL
+bin/aws/5-frontend.sh   # build with VITE_API_URL, upload, invalidate -> https://<id>.cloudfront.net
+bin/aws/teardown.sh     # delete everything afterwards (about $15/month if left running)
+```
 
 ## Troubleshooting
 

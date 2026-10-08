@@ -22,7 +22,8 @@ require_venv() {
 # Read KEY from backend/.env (env var wins if already set).
 env_value() {
   local key="$1"
-  if [[ -n "${!key:-}" ]]; then echo "${!key}"; return; fi
+  # An exported variable wins, even when set to "" (e.g. S3_ENDPOINT_URL= for real AWS).
+  if printenv "$key" >/dev/null 2>&1; then printenv "$key"; return; fi
   grep -E "^${key}=" "$BACKEND/.env" 2>/dev/null | tail -1 | cut -d= -f2-
 }
 

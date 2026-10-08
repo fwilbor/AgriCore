@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# AWS deployment state (contains database password + JWT secret)
+.aws-deploy.env*
