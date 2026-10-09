@@ -1,0 +1,24 @@
+{
+  "CallerReference": "agricore-1791506348",
+  "Comment": "AgriCore frontend",
+  "Enabled": true,
+  "DefaultRootObject": "index.html",
+  "PriceClass": "PriceClass_100",
+  "Origins": { "Quantity": 1, "Items": [ {
+    "Id": "site-bucket",
+    "DomainName": "agricore-site-533016148850-us-east-1.s3.us-east-1.amazonaws.com",
+    "OriginAccessControlId": "E3DIT72YK5LAP9",
+    "S3OriginConfig": { "OriginAccessIdentity": "" }
+  } ] },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "site-bucket",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+    "Compress": true,
+    "AllowedMethods": { "Quantity": 2, "Items": ["GET", "HEAD"] }
+  },
+  "CustomErrorResponses": { "Quantity": 2, "Items": [
+    { "ErrorCode": 403, "ResponsePagePath": "/index.html", "ResponseCode": "200", "ErrorCachingMinTTL": 0 },
+    { "ErrorCode": 404, "ResponsePagePath": "/index.html", "ResponseCode": "200", "ErrorCachingMinTTL": 0 }
+  ] }
+}

@@ -48,6 +48,7 @@ if ! aws rds describe-db-instances --db-instance-identifier "$DB_ID" >/dev/null 
     --engine postgres \
     --db-instance-class db.t4g.micro \
     --allocated-storage 20 --storage-type gp3 \
+    --storage-encrypted \
     --master-username agricore --master-user-password "$DB_PASSWORD" \
     --db-name agricore \
     --vpc-security-group-ids "$DB_SG" \

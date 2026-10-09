@@ -192,6 +192,8 @@ All the scripts are **safe to re-run**: they check what already exists.
 
 ## 6. Using the cloud URL in the showcase
 
+The full timed talk for presenting the deployment is in **[DEPLOY_DEMO_SCRIPT.md](DEPLOY_DEMO_SCRIPT.md)**. For a secret-free live tour of the infrastructure from the terminal, run `bin/aws/status.sh`.
+
 - Update the opening line in `DEMO_SCRIPT.md` from "I'm running it locally" to: *"This is live on AWS. CloudFront serves the React app, the API runs on Lambda through Mangum, the data is in RDS PostgreSQL, and service reports go to a private S3 bucket."*
 - **Warm it up 5 minutes before you present.** Open the URL and log in once, so the Lambda isn't cold when the audience is watching.
 - **Keep the local setup ready as a backup** (`bin/start.sh`). Venue Wi-Fi is the most common demo failure.

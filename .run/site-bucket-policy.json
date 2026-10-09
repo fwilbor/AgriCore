@@ -1,0 +1,12 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [ {
+    "Sid": "AllowCloudFrontRead",
+    "Effect": "Allow",
+    "Principal": { "Service": "cloudfront.amazonaws.com" },
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::agricore-site-533016148850-us-east-1/*",
+    "Condition": { "StringEquals": {
+      "AWS:SourceArn": "arn:aws:cloudfront::533016148850:distribution/ERG68DZ0N5Y7Q" } }
+  } ]
+}
